@@ -2,18 +2,20 @@ package com.example.banking.service.controller;
 
 import com.example.banking.service.model.UserEntity;
 import com.example.banking.service.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     @GetMapping("/{id}")
     public ResponseEntity<UserEntity> getUserById(@PathVariable Long id) {
@@ -38,6 +40,10 @@ public class UserController {
         UserEntity updatedUser = userService.updateUser(user);
         return  ResponseEntity.ok(updatedUser);
     }
-
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return ResponseEntity.noContent().build();
+    }
 
 }

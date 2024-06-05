@@ -8,25 +8,29 @@ import com.example.banking.service.repository.TransactionRepository;
 import com.example.banking.service.repository.UserRepository;
 import com.example.banking.service.service.TransactionService;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
+@RequiredArgsConstructor
 @Service
 public class TransactionServiceImpl implements TransactionService {
 
     @Autowired
-    private TransactionRepository transactionRepository;
+    private final TransactionRepository transactionRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Override
     @Transactional
     public TransactionEntity transferMoney(Long senderId, Long receiverId, Double amount) {
-        UserEntity sender = userRepository.findById(senderId).orElseThrow( () -> new UserNotFoundException("Sender Not Found"));
-        UserEntity receiver = userRepository.findById(senderId).orElseThrow( () -> new UserNotFoundException("Receiver Not Found"));
+        UserEntity sender = userRepository.findById(senderId)
+                .orElseThrow( () -> new UserNotFoundException("Sender Not Found"));
+        UserEntity receiver = userRepository.findById(receiverId)
+                .orElseThrow( () -> new UserNotFoundException("Receiver Not Found"));
 
         if (sender.getCurrentBalance() < amount) {
             throw new TransferMoneyException("Insufficient balance");

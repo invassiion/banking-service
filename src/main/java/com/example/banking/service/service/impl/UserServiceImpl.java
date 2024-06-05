@@ -4,16 +4,18 @@ import com.example.banking.service.model.UserEntity;
 import com.example.banking.service.repository.UserRepository;
 import com.example.banking.service.service.UserService;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Override
     public Optional<UserEntity> findUserById(Long id) {
@@ -35,5 +37,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserEntity updateUser(UserEntity userEntity) {
         return userRepository.save(userEntity);
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
     }
 }

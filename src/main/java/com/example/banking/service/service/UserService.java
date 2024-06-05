@@ -10,4 +10,5 @@ public interface UserService {
     Optional<UserEntity> findUserByUsername(String username);
     UserEntity createUser(UserEntity userEntity);
     UserEntity updateUser(UserEntity userEntity);
+    void deleteUser(Long id);
 }

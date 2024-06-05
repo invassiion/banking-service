@@ -7,7 +7,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
+
 
 @Setter
 @Getter
@@ -31,18 +34,32 @@ public class UserEntity {
     private String fullName;
 
     @NotNull
-    private Date birthDate;
+    private LocalDate birthDate;
 
-    @NotBlank
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_emails", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "email")
     @Email
-    private String email;
+    private Set<String> emails = new HashSet<>();
 
-    @NotBlank
-    private String phoneNumber;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_phones", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "phone")
+    private Set<String> phones = new HashSet<>();
 
     @NotNull
-    private Double initialDeposit;
+    private Double initialBalance;
 
-    @NotNull
     private Double currentBalance;
+
+    @PrePersist
+    protected void onCreate() {
+        if (currentBalance == null) {
+            currentBalance = initialBalance;
+        }
+    }
+
+    public String getEmail() {
+        return emails.stream().findFirst().orElse(null);
+    }
 }

@@ -36,16 +36,12 @@ public class UserEntity {
     @NotNull
     private LocalDate birthDate;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_emails", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "email")
+    @NotBlank
     @Email
-    private Set<String> emails = new HashSet<>();
+    private String email;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_phones", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "phone")
-    private Set<String> phones = new HashSet<>();
+    @NotBlank
+    private String phoneNumber;
 
     @NotNull
     private Double initialBalance;
@@ -59,7 +55,4 @@ public class UserEntity {
         }
     }
 
-    public String getEmail() {
-        return emails.stream().findFirst().orElse(null);
-    }
 }

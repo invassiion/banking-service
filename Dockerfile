@@ -2,6 +2,6 @@ FROM openjdk:17
 
 WORKDIR /app
 
-COPY target/banking-app.jar /app/banking-app.jar
+COPY target/banking-service-0.0.1-SNAPSHOT.jar /app/banking-service-0.0.1-SNAPSHOT.jar
 
-CMD ["java", "-jar", "banking-app.jar"]
+CMD ["java", "-jar", "banking-service-0.0.1-SNAPSHOT.jar"]

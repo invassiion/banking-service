@@ -3,6 +3,8 @@ package com.example.banking.service.controller;
 
 import com.example.banking.service.service.impl.UserAuthService;
 import com.example.banking.service.util.JwtUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +32,10 @@ public class AuthController {
     private UserAuthService userAuthService;
 
     @PostMapping("/login")
+    @Operation(summary = "Login user and generate JWT token", responses = {
+            @ApiResponse(responseCode = "200", description = "Login successful, token generated"),
+            @ApiResponse(responseCode = "400", description = "Invalid credentials")
+    })
     public ResponseEntity<?> login(@RequestParam String username, @RequestParam String password) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
